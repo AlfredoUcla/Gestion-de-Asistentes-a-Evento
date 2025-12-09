@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/gif" href="./resources/favicon.gif" />
+  
+  <title>Sistema de Gestión de Eventos Académicos</title>
+</head>
+<body>
+  <!-- Contenedor principal evento -->
+  <div id="evento">
+    <div class="container">
+      <!-- Vista Inicio -->
+      <section id="inicio" class="view active">
+        <header class="header">
+          <h1>🎓 Gestión de Eventos Académicos</h1>
+          <p>Sistema de registro y administración de asistentes</p>
+        </header>
+
+        <div class="button-group">
+          <button id="inicio_btUsuario" class="btn btn-primary btn-large">📱 Registro de Asistencia</button>
+          <button id="inicio_btAdmin" class="btn btn-secondary btn-large">⚙️ Panel de Administración</button>
+        </div>
+
+        <footer class="footer">
+          <p>Organizado por Grupo de Bachilleres</p>
+        </footer>
+      </section>
+
+      <!-- Vista Usuario (registro público unificado) -->
+      <section id="usuario" class="view">
+        <header class="header">
+          <h2>📝 Registro de Asistencia</h2>
+          <p>Complete sus datos para el evento académico</p>
+        </header>
+
+        <div class="unified-container">
+          <!-- Sección del Formulario -->
+          <div class="form-section">
+            <h3> Registrar Nuevo Asistente</h3>
+            <form class="form-container">
+              <div class="form-group">
+                <label for="usuario_inNombre">Nombre Completo *</label>
+                <input type="text" id="usuario_inNombre" placeholder="Ingrese su nombre completo" />
+                <small>Mínimo 3 caracteres</small>
+              </div>
+
+              <div class="form-group">
+                <label for="usuario_inTelefono">Teléfono *</label>
+                <input type="tel" id="usuario_inTelefono" placeholder="Ingrese su número de teléfono" />
+                <small>Mínimo 7 dígitos</small>
+              </div>
+
+              <div class="form-group">
+                <label for="usuario_inCorreo">Correo Electrónico *</label>
+                <input type="email" id="usuario_inCorreo" placeholder="example@correo.com" />
+                <small>Debe ser un correo válido</small>
+              </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="usuario_selTipo">Tipo de Invitado *</label>
+              <select id="usuario_selTipo">
+                <option value="Estudiante">Estudiante</option>
+                <option value="Docente">Docente</option>
+                <option value="Familiar">Familiar</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+          </div>
+
+              <div class="form-group">
+                <label for="usuario_inObservaciones">Observaciones</label>
+                <input type="text" id="usuario_inObservaciones" placeholder="(opcional)" />
+              </div>
+
+              <div id="usuario_lblMensaje" class="message"></div>
+
+              <div class="button-group">
+                <button type="button" id="usuario_btRegistrar" class="btn btn-success">✅ Registrar Asistencia</button>
+                <button type="button" id="usuario_btCancelar" class="btn btn-outline">🔄 Limpiar</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Sección de Registros Existentes -->
+          <div class="registros-section">
+            <div class="section-header">
+              <h3>👥 Asistentes Registrados</h3>
+              <div class="filters">
+                <div class="filter-group">
+                  <label for="usuario_selFiltroEstado">Filtrar por Estado:</label>
+                  <select id="usuario_selFiltroEstado">
+                    <option value="todos">Todos</option>
+                    <option value="Invitado">Invitado</option>
+                    <option value="Confirmado">Confirmado</option>
+                    <option value="Asistente">Asistente</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label for="usuario_selFiltroTipo">Filtrar por Tipo:</label>
+                  <select id="usuario_selFiltroTipo">
+                    <option value="todos">Todos</option>
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Docente">Docente</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div id="usuario_divAsistentes" class="table-container"></div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="usuario_btVolver" class="btn btn-outline">← Volver al Inicio</button>
+        </div>
+      </section>
+
+      <!-- Panel Administración -->
+      <section id="admin" class="view">
+        <header class="header">
+          <h2>⚙️ Panel de Administración</h2>
+          <p>Gestión completa de asistentes al evento</p>
+        </header>
+
+        <div class="button-group">
+          <button id="admin_btAsistentes" class="btn btn-primary btn-large">👥 Gestionar Asistentes</button>
+          <button id="admin_btEstadisticas" class="btn btn-info btn-large">📊 Ver Estadísticas</button>
+          <button id="admin_btVolver" class="btn btn-outline">← Volver al Inicio</button>
+        </div>
+      </section>
+
+      <!-- Gestión de Asistentes (Admin) -->
+      <section id="asistentes" class="view">
+        <header class="header">
+          <h2>👥 Gestión de Asistentes</h2>
+        </header>
+        <div class="unified-container">
+          <!-- Sección del Formulario -->
+          <div class="form-section">
+            <h3> Registrar Nuevo Asistente</h3>
+            <form class="form-container">
+              <div class="form-group">
+                <label for="asistentes_inNombre">Nombre Completo *</label>
+                <input type="text" id="asistentes_inNombre" placeholder="Ingrese su nombre completo" />
+                <small>Mínimo 3 caracteres</small>
+              </div>
+
+              <div class="form-group">
+                <label for="asistentes_inTelefono">Teléfono *</label>
+                <input type="tel" id="asistentes_inTelefono" placeholder="Ingrese su número de teléfono" />
+                <small>Mínimo 7 dígitos</small>
+              </div>
+
+              <div class="form-group">
+                <label for="asistentes_inCorreo">Correo Electrónico *</label>
+                <input type="email" id="asistentes_inCorreo" placeholder="ejemplo@correo.com" />
+                <small>Debe ser un correo válido</small>
+              </div>
+
+              <div class="form-group">
+                <label for="asistentes_inTipo">Tipo de Invitado</label>
+                <select id="asistentes_inTipo">
+                  <option value="Estudiante">Estudiante</option>
+                  <option value="Docente">Docente</option>
+                  <option value="Familiar">Familiar</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="asistentes_inEstado">Estado de Asistencia</label>
+                <select id="asistentes_inEstado">
+                  <option value="Invitado">Invitado</option>
+                  <option value="Confirmado">Confirmado</option>
+                  <option value="Asistente">Asistente</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="asistentes_inObservaciones">Observaciones</label>
+                <textarea id="asistentes_inObservaciones" rows="3" placeholder="Observaciones (opcional)"></textarea>
+              </div>
+
+              <div id="asistentes_lblMensaje" class="message"></div>
+
+              <div class="button-group">
+                <button type="button" id="asistentes_btRegistrar" class="btn btn-success">✅ Registrar Asistencia</button>
+                <button type="button" id="asistentes_btCancelar" class="btn btn-outline">🔄 Limpiar</button>
+              </div>
+            </form>
+          </div>
+
+
+        <div class="filters">
+          <div class="filter-group">
+            <label for="asistentes_selFiltroEstado">Filtrar por Estado:</label>
+            <select id="asistentes_selFiltroEstado">
+              <option value="todos">Todos</option>
+              <option value="Invitado">Invitado</option>
+              <option value="Confirmado">Confirmado</option>
+              <option value="Asistente">Asistente</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="asistentes_selFiltroTipo">Filtrar por Tipo:</label>
+            <select id="asistentes_selFiltroTipo">
+              <option value="todos">Todos</option>
+              <option value="Estudiante">Estudiante</option>
+              <option value="Docente">Docente</option>
+              <option value="Familiar">Familiar</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="asistentes_divAsistentes" class="table-container"></div>
+
+        <div class="button-group">
+          <button id="asistentes_btVolver" class="btn btn-outline">← Volver al Panel</button>
+        </div>
+      </section>
+
+      <!-- Formulario Agregar / Editar Asistente (Admin) -->
+      <section id="asistente" class="view">
+        <header class="header">
+          <h2><span id="asistente_lblOpcion">Agregar</span> Asistente</h2>
+          <p>Complete la información del participante</p>
+        </header>
+
+        <form class="form-container">
+          <div class="form-group">
+            <label for="asistente_inNombre">Nombre Completo *</label>
+            <input type="text" id="asistente_inNombre" placeholder="Ingrese el nombre completo" />
+            <small>Mínimo 3 caracteres</small>
+          </div>
+
+          <div class="form-group">
+            <label for="asistente_inTelefono">Teléfono *</label>
+            <input type="tel" id="asistente_inTelefono" placeholder="Ingrese el número de teléfono" />
+            <small>Mínimo 7 dígitos</small>
+          </div>
+
+          <div class="form-group">
+            <label for="asistente_inCorreo">Correo Electrónico *</label>
+            <input type="email" id="asistente_inCorreo" placeholder="ejemplo@correo.com" />
+            <small>Debe ser un correo válido</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="asistente_selTipo">Tipo de Invitado*</label>
+              <select id="asistente_selTipo">
+                <option value="Estudiante">Estudiante</option>
+                <option value="Docente">Docente</option>
+                <option value="Familiar">Familiar</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="asistente_selEstado">Estado *</label>
+              <select id="asistente_selEstado">
+                <option value="Invitado">Invitado</option>
+                <option value="Confirmado">Confirmado</option>
+                <option value="Asistente">Asistente</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="asistente_inObservaciones">Observaciones</label>
+            <textarea id="asistente_inObservaciones" rows="3" placeholder="Observaciones adicionales"></textarea>
+          </div>
+
+          <div class="button-group">
+            <button type="button" id="asistente_btAceptar" class="btn btn-success">✅ Aceptar</button>
+            <button type="button" id="asistente_btCancelar" class="btn btn-outline">❌ Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Estadísticas -->
+      <section id="estadisticas" class="view">
+        <header class="header">
+          <h2>📊 Estadísticas del Evento</h2>
+          <p>Resumen y análisis de participantes</p>
+        </header>
+
+        <div id="estadisticas_divEstadisticas" class="stats-container"></div>
+
+        <div class="button-group">
+          <button id="estadisticas_btVolver" class="btn btn-outline">← Volver al Panel</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Cargar la aplicación -->
+<script type="module">
+        // Importación del módulo principal
+        import Cl_index from "./dist/Cl_index.js";
+        new Cl_index();
+    </script>
+</body>
+</html>
